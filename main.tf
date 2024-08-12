@@ -67,7 +67,7 @@ resource "google_project_iam_member" "storage_admin_iam_member" {
 resource "google_project_iam_member" "composer_api_service_agent" {
   project = var.project
   role    = "roles/composer.ServiceAgentV2Ext"
-  member  = "serviceAccount:service-${var.project_number}.cloudcomposer-accounts.iam.gserviceaccount.com"
+  member  = "serviceAccount:${google_service_account.composer_service_account.email}"
 }
 
 ###############################################################################################################
@@ -95,7 +95,7 @@ resource "google_storage_bucket" "ecr_bucket_main" {
 
 # Add a new resource block for the temp bucket particularly for the Dataproc cluster
 resource "google_storage_bucket" "ecr_bucket_dataproc_temp" {
-  name     = "${var.composer-environment-name}-bucket-temp-dataproc"
+  name     = "${var.composer-environment-name}-bucket-dataproc-temp"
   location = var.location
 
   versioning {
