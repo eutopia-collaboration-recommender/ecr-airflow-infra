@@ -95,9 +95,9 @@ resource "google_storage_bucket" "ecr_bucket_main" {
 
 # Add a new resource block for the temp bucket particularly for the Dataproc cluster
 resource "google_storage_bucket" "ecr_bucket_dataproc_temp" {
-  name     = "${var.composer-environment-name}-bucket-dataproc-temp"
-  location = var.location
-
+  name          = "${var.composer-environment-name}-bucket-dataproc-temp"
+  location      = var.location
+  force_destroy = true
   versioning {
     enabled = false
   }
@@ -114,9 +114,9 @@ resource "google_storage_bucket" "ecr_bucket_dataproc_temp" {
 
 # Add a new resource block for the stage bucket particularly for the Dataproc cluster
 resource "google_storage_bucket" "ecr_bucket_dataproc_stage" {
-  name     = "${var.composer-environment-name}-bucket-dataproc-stage"
-  location = var.location
-
+  name          = "${var.composer-environment-name}-bucket-dataproc-stage"
+  location      = var.location
+  force_destroy = true
   versioning {
     enabled = false
   }
