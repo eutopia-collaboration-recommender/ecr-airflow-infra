@@ -26,10 +26,16 @@ resource "google_service_account" "composer_service_account" {
   display_name = var.service-account
 
 }
-# Add roles: Dataproc Worker, Secret Manager Secret Accessor, Storage Admin
+# Add roles
 resource "google_project_iam_member" "dataproc_worker_iam_member" {
   project = var.project
   role    = "roles/dataproc.worker"
+  member  = "serviceAccount:${google_service_account.composer_service_account.email}"
+}
+
+resource "google_project_iam_member" "dataproc_editor_iam_member" {
+  project = var.project
+  role    = "roles/dataproc.editor"
   member  = "serviceAccount:${google_service_account.composer_service_account.email}"
 }
 
@@ -51,6 +57,11 @@ resource "google_project_iam_member" "composer_worker_iam_member" {
   member  = "serviceAccount:${google_service_account.composer_service_account.email}"
 }
 
+resource "google_project_iam_member" "composer_api_service_agent" {
+  project = var.project
+  role    = "roles/composer.ServiceAgentV2Ext"
+  member  = "serviceAccount:${google_service_account.composer_service_account.email}"
+}
 
 resource "google_project_iam_member" "secret_manager_secret_accessor_iam_member" {
   project = var.project
@@ -64,9 +75,14 @@ resource "google_project_iam_member" "storage_admin_iam_member" {
   member  = "serviceAccount:${google_service_account.composer_service_account.email}"
 }
 
-resource "google_project_iam_member" "composer_api_service_agent" {
+resource "google_project_iam_member" "bigquery_data_editor_iam_member" {
   project = var.project
-  role    = "roles/composer.ServiceAgentV2Ext"
+  role    = "roles/bigquery.dataEditor"
+  member  = "serviceAccount:${google_service_account.composer_service_account.email}"
+}
+resource "google_project_iam_member" "bigquery_job_user_iam_member" {
+  project = var.project
+  role    = "roles/bigquery.jobUser"
   member  = "serviceAccount:${google_service_account.composer_service_account.email}"
 }
 
