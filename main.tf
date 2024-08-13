@@ -24,7 +24,6 @@ provider "google" {
 resource "google_service_account" "composer_service_account" {
   account_id   = var.service-account
   display_name = var.service-account
-
 }
 # Add roles
 resource "google_project_iam_member" "dataproc_worker_iam_member" {
@@ -80,9 +79,16 @@ resource "google_project_iam_member" "bigquery_data_editor_iam_member" {
   role    = "roles/bigquery.dataEditor"
   member  = "serviceAccount:${google_service_account.composer_service_account.email}"
 }
+
 resource "google_project_iam_member" "bigquery_job_user_iam_member" {
   project = var.project
   role    = "roles/bigquery.jobUser"
+  member  = "serviceAccount:${google_service_account.composer_service_account.email}"
+}
+
+resource "google_project_iam_member" "bigquery_connection_user_iam_member" {
+  project = var.project
+  role    = "roles/bigquery.connectionUser"
   member  = "serviceAccount:${google_service_account.composer_service_account.email}"
 }
 
@@ -190,9 +196,7 @@ resource "google_dataproc_cluster" "dataproc_cluster" {
     }
     gce_cluster_config {
       service_account = google_service_account.composer_service_account.email
-      service_account_scopes = [
-        "cloud-platform"
-      ]
+      service_account_scopes = ["useraccounts-ro", "storage-rw", "logging-write", "cloud-platform"]
     }
   }
 }
