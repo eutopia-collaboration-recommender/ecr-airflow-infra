@@ -169,6 +169,9 @@ resource "google_composer_environment" "composer_environment" {
     }
     software_config {
       image_version = var.composer-environment-version
+      pypi_packages = {
+        langdetect = "==1.0.9"
+      }
     }
   }
   storage_config {
