@@ -92,6 +92,12 @@ resource "google_project_iam_member" "bigquery_connection_user_iam_member" {
   member  = "serviceAccount:${google_service_account.composer_service_account.email}"
 }
 
+resource "google_project_iam_member" "bigquery_read_session_user_iam_member" {
+  project = var.project
+  role    = "roles/bigquery.readSessionUser"
+  member  = "serviceAccount:${google_service_account.composer_service_account.email}"
+}
+
 ###############################################################################################################
 # Cloud Storage
 ###############################################################################################################
